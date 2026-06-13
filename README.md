@@ -13,6 +13,8 @@ A simple Inventory Management REST API built with Express.js using mock data sto
 - Search items by name
 - Filter items by category and quantity
 - Request validation middleware
+- Express built-in middleware (`express.json()`)
+- CORS middleware (`cors()`) to allow requests from different origins
 - Global error handling
 - Custom 404 route handler
 - Static file serving using Express `express.static()`
@@ -33,7 +35,7 @@ npm run dev
 
 Server:
 
-```txt
+```load html file
 http://localhost:5000
 ```
 
@@ -43,6 +45,22 @@ http://localhost:5000
 
 ```http
 GET /api/items
+```
+
+### Test Global Error handler
+
+```http
+GET /api/items/test-error
+```
+### Test Custom 404 route handler
+
+```http
+POST /api/items/test-error
+```
+Or
+
+```http
+GET /api/itemsss
 ```
 
 ### Get Item
