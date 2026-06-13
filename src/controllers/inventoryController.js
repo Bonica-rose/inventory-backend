@@ -38,31 +38,29 @@ const searchItems = (req, res) => {
 const filterItems = (req, res) => {
     const { category, quantity } = req.query;
 
-    if (!category) {
-        return res.status(400).json({
-            success: false,
-            message: 'Category name is required for filtering'
-        });
-    }
-
-    if (!quantity) {
-        return res.status(400).json({
-            success: false,
-            message: 'Quantity is required for filtering'
-        });
-    }
-
     let result = [...inventories];
 
+    // Filter by category if it is provided
     if (category) {
         result = result.filter(item =>
-            item.category.toLowerCase() === category.toLowerCase()
+            item.category && item.category.toLowerCase() === category.toLowerCase()
         );
     }
 
+    // Filter by quantity if it is provided
     if (quantity) {
+        const minQuantity = Number(quantity);
+        
+        // Ensure the query resolves to a valid number
+        if (isNaN(minQuantity)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Quantity must be a valid number'
+            });
+        }
+
         result = result.filter(item =>
-            item.quantity >= Number(quantity)
+            item.quantity !== undefined && item.quantity >= minQuantity
         );
     }
 
