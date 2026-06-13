@@ -17,6 +17,12 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api/items', inventoryRoutes);
 
+// 404 handler
+app.use((req, res, next) => {
+    const error = new Error(`Route not found: ${req.originalUrl}`);
+    error.statusCode = 404;
+    next(error);
+});
 
 // Error handler
 app.use(errorHandler);
