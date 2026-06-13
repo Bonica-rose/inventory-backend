@@ -11,6 +11,30 @@ const getItems = (req, res) => {
     });
 };
 
+// POST /api/items
+const createItem = (req, res) => {
+    const { name, category, quantity, price } = req.body;
+
+    const newItem = {
+        id:
+            inventories.length > 0
+                ? inventories[inventories.length - 1].id + 1
+                : 1,
+        name,
+        category,
+        quantity,
+        price
+    };
+
+    inventories.push(newItem);
+
+    return res.status(201).json({
+        success: true,
+        message: "Item created successfully",
+        data: newItem,
+    });
+};
+
 module.exports = {
     getItems,
 };
