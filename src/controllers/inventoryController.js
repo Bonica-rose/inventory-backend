@@ -11,6 +11,68 @@ const getItems = (req, res) => {
     });
 };
 
+// GET /api/items/search?name=?
+const searchItems = (req, res) => {
+    const { name } = req.query;
+
+    if (!name) {
+        return res.status(400).json({
+            success: false,
+            message: 'Search name is required'
+        });
+    }
+
+    const result = inventories.filter(item =>
+        item.name.toLowerCase().includes(name.toLowerCase())
+    );
+
+    return res.status(200).json({
+        success: true,
+        count: result.length,
+        data: result
+    });
+}
+
+// GET /api/items/filter?category=?
+// GET /api/items/filter?quantity=?
+const filterItems = (req, res) => {
+    const { category, quantity } = req.query;
+
+    if (!category) {
+        return res.status(400).json({
+            success: false,
+            message: 'Category name is required for filtering'
+        });
+    }
+
+    if (!quantity) {
+        return res.status(400).json({
+            success: false,
+            message: 'Quantity is required for filtering'
+        });
+    }
+
+    let result = [...inventories];
+
+    if (category) {
+        result = result.filter(item =>
+            item.category.toLowerCase() === category.toLowerCase()
+        );
+    }
+
+    if (quantity) {
+        result = result.filter(item =>
+            item.quantity >= Number(quantity)
+        );
+    }
+
+    return res.status(200).json({
+        success: true,
+        count: result.length,
+        data: result
+    });
+};
+
 // POST /api/items
 const createItem = (req, res) => {
     const { name, category, quantity, price } = req.body;
@@ -140,6 +202,8 @@ const deleteItemById = (req, res) => {
 
 module.exports = {
     getItems,
+    searchItems,
+    filterItems,
     createItem,
     getItemById,
     updateItemById,
