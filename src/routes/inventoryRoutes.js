@@ -17,7 +17,7 @@ router.get("/", getItems);
 router.post("/", validateItem, createItem);
 router.get("/:id", getItemById);
 router.put("/:id", validateItem, updateItemById);
-router.patch("/:id", validateItem, patchItemById);
+router.patch("/:id", patchItemById);
 router.delete("/:id",deleteItemById);
 
 module.exports = router;
