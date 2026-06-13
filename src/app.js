@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const errorHandler = require('./middleware/errorHandler');
 const inventoryRoutes = require('./routes/inventoryRoutes');
@@ -10,9 +11,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 // API Routes
 app.use('/api/items', inventoryRoutes);
