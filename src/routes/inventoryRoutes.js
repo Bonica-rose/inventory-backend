@@ -19,13 +19,14 @@ router.get("/", getItems);
 router.get('/search', searchItems);
 router.get('/filter', filterItems);
 router.post("/", validateItem, createItem);
+router.get('/test-error', (req, res) => {
+    throw new Error('Something went wrong');
+});
 router.get("/:id", getItemById);
 router.put("/:id", validateItem, updateItemById);
 router.patch("/:id", patchItemById);
 router.delete("/:id", deleteItemById);
 
-router.get('/test-error', (req, res) => {
-    throw new Error('Something went wrong');
-});
+
 
 module.exports = router;
