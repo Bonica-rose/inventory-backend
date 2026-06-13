@@ -16,10 +16,9 @@ const searchItems = (req, res) => {
     const { name } = req.query;
 
     if (!name) {
-        return res.status(400).json({
-            success: false,
-            message: 'Search name is required'
-        });
+        const error = new Error("Search name is required");
+        error.statusCode = 400;
+        throw error;
     }
 
     const result = inventories.filter(item =>
@@ -53,10 +52,9 @@ const filterItems = (req, res) => {
         
         // Ensure the query resolves to a valid number
         if (isNaN(minQuantity)) {
-            return res.status(400).json({
-                success: false,
-                message: 'Quantity must be a valid number'
-            });
+            const error = new Error("Quantity must be a valid number");
+            error.statusCode = 400;
+            throw error;
         }
 
         result = result.filter(item =>
@@ -104,10 +102,9 @@ const getItemById = (req, res) => {
     );
 
     if (!inventory) {
-        return res.status(404).json({
-            success: false,
-            message: "Item not found",
-        });
+        const error = new Error("Item not found");
+        error.statusCode = 404;
+        throw error;
     }
 
     return res.status(200).json({
@@ -125,10 +122,9 @@ const updateItemById = (req, res) => {
     );
 
     if (index === -1) {
-        return res.status(404).json({
-            success: false,
-            message: "Item not found",
-        });
+        const error = new Error("Item not found");
+        error.statusCode = 404;
+        throw error;
     }
 
     const { name, category, quantity, price }  = req.body;
@@ -157,16 +153,22 @@ const patchItemById = (req, res) => {
     );
 
     if (!inventory) {
-        return res.status(404).json({
-            success: false,
-            message: "Item not found",
-        });
+        const error = new Error("Item not found");
+        error.statusCode = 404;
+        throw error;
     }
 
-    if (req.body.name) inventory.name = req.body.name
-    if (req.body.category) inventory.category = req.body.category
-    if (req.body.quantity) inventory.quantity = req.body.quantity
-    if (req.body.price) inventory.price = req.body.price
+    if (req.body.name !== undefined)
+        inventory.name = req.body.name;
+
+    if (req.body.category !== undefined)
+        inventory.category = req.body.category;
+
+    if (req.body.quantity !== undefined)
+        inventory.quantity = req.body.quantity;
+
+    if (req.body.price !== undefined)
+        inventory.price = req.body.price;
 
     return res.status(200).json({
         success: true,
@@ -184,15 +186,14 @@ const deleteItemById = (req, res) => {
     );
 
     if (index === -1) {
-        return res.status(404).json({
-            success: false,
-            message: "Item not found",
-        });
+        const error = new Error("Item not found");
+        error.statusCode = 404;
+        throw error;
     }
 
     inventories.splice(index, 1);
 
-    return res.status(204).json({
+    return res.status(200).json({
         success: true,
         message: "Item deleted successfully"
     });
