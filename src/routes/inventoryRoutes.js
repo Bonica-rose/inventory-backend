@@ -6,6 +6,8 @@ const validateItem = require("../middleware/validateItem");
 
 const {
     getItems,
+    searchItems,
+    filterItems,
     createItem,
     getItemById,
     updateItemById,
@@ -14,6 +16,8 @@ const {
 } = require("../controllers/inventoryController");
 
 router.get("/", getItems);
+router.get('/search', searchItems);
+router.get('/filter', filterItems);
 router.post("/", validateItem, createItem);
 router.get("/:id", getItemById);
 router.put("/:id", validateItem, updateItemById);
