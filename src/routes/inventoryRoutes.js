@@ -22,6 +22,10 @@ router.post("/", validateItem, createItem);
 router.get("/:id", getItemById);
 router.put("/:id", validateItem, updateItemById);
 router.patch("/:id", patchItemById);
-router.delete("/:id",deleteItemById);
+router.delete("/:id", deleteItemById);
+
+router.get('/test-error', (req, res) => {
+    throw new Error('Something went wrong');
+});
 
 module.exports = router;
